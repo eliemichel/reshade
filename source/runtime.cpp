@@ -125,6 +125,9 @@ reshade::runtime::runtime() :
 #if RESHADE_GUI
 	init_ui();
 #endif
+#if RESHADE_REMOTE
+	init_remote();
+#endif
 	load_config();
 }
 reshade::runtime::~runtime()
@@ -134,6 +137,9 @@ reshade::runtime::~runtime()
 
 #if RESHADE_GUI
 	deinit_ui();
+#endif
+#if RESHADE_REMOTE
+	deinit_remote();
 #endif
 }
 
@@ -225,6 +231,10 @@ void reshade::runtime::on_present()
 #if RESHADE_GUI
 	// Draw overlay
 	draw_ui();
+#endif
+#if RESHADE_REMOTE
+	// Draw overlay
+	handle_remote_calls();
 #endif
 
 	// Reset input status

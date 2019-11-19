@@ -19,6 +19,11 @@ struct ImDrawData;
 struct ImGuiContext;
 #endif
 
+#if RESHADE_REMOTE
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
+
 namespace reshade
 {
 	class ini_file; // Forward declarations to avoid excessive #include
@@ -365,6 +370,19 @@ namespace reshade
 		// Used by preset explorer
 		bool _browse_path_is_input_mode = false;
 		std::filesystem::path _current_browse_path;
+#endif
+
+#if RESHADE_REMOTE
+		void init_remote();
+		void deinit_remote();
+		void handle_remote_calls();
+		static DWORD WINAPI server_thread(LPVOID lpParam);
+
+		bool _remote_initialized = false;
+		WSADATA _wsa_data;
+		std::string _port = "36150";
+		SOCKET _listen_socket = INVALID_SOCKET;
+		HANDLE _server_thread;
 #endif
 	};
 }
