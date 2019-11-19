@@ -50,7 +50,7 @@ namespace reshade
 		bool is_blocking_mouse_input() const { return _block_mouse; }
 		bool is_blocking_keyboard_input() const { return _block_keyboard; }
 
-		auto lock() { return std::lock_guard<std::mutex>(_mutex); }
+		auto lock() { return std::unique_lock<std::mutex>(_mutex); }
 		void next_frame();
 
 		static std::string key_name(unsigned int keycode);

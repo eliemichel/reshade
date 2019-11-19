@@ -8,7 +8,7 @@
 #include <d3d12.h>
 #include "draw_call_tracker.hpp"
 
-struct DECLSPEC_UUID("479B29E3-9A2C-11D0-B696-00A0C903487A") D3D12GraphicsCommandList : ID3D12GraphicsCommandList4
+struct DECLSPEC_UUID("479B29E3-9A2C-11D0-B696-00A0C903487A") D3D12GraphicsCommandList : ID3D12GraphicsCommandList3
 {
 	D3D12GraphicsCommandList(D3D12Device *device, ID3D12GraphicsCommandList *original);
 
@@ -99,6 +99,7 @@ struct DECLSPEC_UUID("479B29E3-9A2C-11D0-B696-00A0C903487A") D3D12GraphicsComman
 	void    STDMETHODCALLTYPE SetProtectedResourceSession(ID3D12ProtectedResourceSession *pProtectedResourceSession) override;
 	#pragma endregion
 	#pragma region ID3D12GraphicsCommandList4
+	/*
 	void    STDMETHODCALLTYPE BeginRenderPass(UINT NumRenderTargets, const D3D12_RENDER_PASS_RENDER_TARGET_DESC *pRenderTargets, const D3D12_RENDER_PASS_DEPTH_STENCIL_DESC *pDepthStencil, D3D12_RENDER_PASS_FLAGS Flags) override;
 	void    STDMETHODCALLTYPE EndRenderPass(void) override;
 	void    STDMETHODCALLTYPE InitializeMetaCommand(ID3D12MetaCommand *pMetaCommand, const void *pInitializationParametersData, SIZE_T InitializationParametersDataSizeInBytes) override;
@@ -108,6 +109,7 @@ struct DECLSPEC_UUID("479B29E3-9A2C-11D0-B696-00A0C903487A") D3D12GraphicsComman
 	void    STDMETHODCALLTYPE CopyRaytracingAccelerationStructure(D3D12_GPU_VIRTUAL_ADDRESS DestAccelerationStructureData, D3D12_GPU_VIRTUAL_ADDRESS SourceAccelerationStructureData, D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE Mode) override;
 	void    STDMETHODCALLTYPE SetPipelineState1(ID3D12StateObject *pStateObject) override;
 	void    STDMETHODCALLTYPE DispatchRays(const D3D12_DISPATCH_RAYS_DESC *pDesc) override;
+	*/
 	#pragma endregion
 
 	bool check_and_upgrade_interface(REFIID riid);

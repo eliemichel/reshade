@@ -28,7 +28,7 @@ bool D3D12GraphicsCommandList::check_and_upgrade_interface(REFIID riid)
 		__uuidof(ID3D12GraphicsCommandList1),
 		__uuidof(ID3D12GraphicsCommandList2),
 		__uuidof(ID3D12GraphicsCommandList3),
-		__uuidof(ID3D12GraphicsCommandList4),
+//		__uuidof(ID3D12GraphicsCommandList4),
 	};
 
 	for (unsigned int version = 0; version < ARRAYSIZE(iid_lookup); ++version)
@@ -387,6 +387,7 @@ void STDMETHODCALLTYPE D3D12GraphicsCommandList::SetProtectedResourceSession(ID3
 	static_cast<ID3D12GraphicsCommandList3 *>(_orig)->SetProtectedResourceSession(pProtectedResourceSession);
 }
 
+/*
 void STDMETHODCALLTYPE D3D12GraphicsCommandList::BeginRenderPass(UINT NumRenderTargets, const D3D12_RENDER_PASS_RENDER_TARGET_DESC *pRenderTargets, const D3D12_RENDER_PASS_DEPTH_STENCIL_DESC *pDepthStencil, D3D12_RENDER_PASS_FLAGS Flags)
 {
 	assert(_interface_version >= 4);
@@ -432,3 +433,4 @@ void STDMETHODCALLTYPE D3D12GraphicsCommandList::DispatchRays(const D3D12_DISPAT
 	assert(_interface_version >= 4);
 	static_cast<ID3D12GraphicsCommandList4 *>(_orig)->DispatchRays(pDesc);
 }
+*/
