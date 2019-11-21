@@ -14,6 +14,8 @@
 
 #define BUFFER_LEN 1024
 
+int reshade::runtime::_next_port = 36150;
+
 DWORD WINAPI reshade::runtime::server_thread(LPVOID lpParam)
 {
 	reshade::runtime *runtime = (reshade::runtime*)lpParam;
@@ -74,10 +76,28 @@ DWORD WINAPI reshade::runtime::server_thread(LPVOID lpParam)
 		goto cleanup;
 	}
 
+	// Prepare for call to select
+	fd_set readSet;
+	FD_ZERO(&readSet);
+	FD_SET(listen_socket, &readSet);
+	timeval timeout;
+	timeout.tv_sec = 1;
+	timeout.tv_usec = 0;
 
 	while (runtime->_server_running)
 	{
 		if (client_socket == INVALID_SOCKET) {
+
+			FD_ZERO(&readSet);
+			FD_SET(listen_socket, &readSet);
+			result = select(0, &readSet, NULL, NULL, &timeout);
+			if (result == SOCKET_ERROR) {
+				LOG(ERROR) << "select failed with error: " << WSAGetLastError();
+				goto cleanup;
+			}
+			else if (result == 0) {
+				continue; // timeout, try again but check _server_running
+			}
 			// Accept connections (move this in a handle_remote_calls?)
 			client_socket = accept(listen_socket, NULL, NULL);
 			if (client_socket == INVALID_SOCKET) {
@@ -152,7 +172,9 @@ cleanup:
 
 void reshade::runtime::init_remote()
 {
-	LOG(INFO) << "Init remote control in runtime @" << this;
+	_port = std::to_string(_next_port++);
+
+	LOG(INFO) << "Init remote control in runtime @" << this << " on port " << _port;
 
 	_server_thread = CreateThread(NULL, 0, server_thread, (LPVOID)this, 0, NULL);
 }
@@ -177,6 +199,7 @@ void reshade::runtime::handle_remote_calls()
 			case RELOAD_MSG:
 				LOG(INFO) << "[Remote] Reloading shaders";
 				load_effects();
+				break;
 			default:
 				LOG(ERROR) << "[Remote] Unknown message: #" << msg;
 			}

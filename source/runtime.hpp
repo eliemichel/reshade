@@ -383,6 +383,7 @@ namespace reshade
 		bool _remote_initialized = false;
 		WSADATA _wsa_data;
 		std::string _port = "36150";
+		static int _next_port;
 		HANDLE _server_thread;
 
 		enum Message {
