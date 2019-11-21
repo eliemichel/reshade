@@ -204,7 +204,7 @@
     <ClCompile Include="source\windows\ws2_32.cpp">
       <Filter>hooks\windows</Filter>
     </ClCompile>
-    <ClCompile Include="source\remote.cpp">
+    <ClCompile Include="source\remote_server.cpp">
       <Filter>core\runtime</Filter>
     </ClCompile>
   </ItemGroup>

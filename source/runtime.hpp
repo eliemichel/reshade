@@ -11,6 +11,7 @@
 #include <chrono>
 #include <functional>
 #include <filesystem>
+#include <queue>
 
 #if RESHADE_GUI
 #include "gui_code_editor.hpp"
@@ -378,11 +379,18 @@ namespace reshade
 		void handle_remote_calls();
 		static DWORD WINAPI server_thread(LPVOID lpParam);
 
+		bool _server_running = true;
 		bool _remote_initialized = false;
 		WSADATA _wsa_data;
 		std::string _port = "36150";
-		SOCKET _listen_socket = INVALID_SOCKET;
 		HANDLE _server_thread;
+
+		enum Message {
+			NOOP_MSG,
+			RELOAD_MSG,
+		};
+		std::mutex _message_queue_mutex;
+		std::queue<Message> _message_queue;
 #endif
 	};
 }
